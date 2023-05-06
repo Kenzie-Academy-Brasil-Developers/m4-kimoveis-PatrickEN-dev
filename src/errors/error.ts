@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 
-class AppError extends Error {
+export class AppError extends Error {
   statusCode: number;
 
   constructor(message: string, statusCode: number = 400) {

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const realEstateSchema = z.object({
   id: z.number(),
-  value: z.number().or(z.string()).default(0),
+  value: z.number().default(0),
   size: z.number(),
   address: z.object({
     street: z.string().max(45),

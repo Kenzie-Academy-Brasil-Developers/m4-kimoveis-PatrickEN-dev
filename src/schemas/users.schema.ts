@@ -5,19 +5,20 @@ export const userSchema = z.object({
   name: z.string().max(45),
   email: z.string().email().max(45),
   admin: z.boolean().default(false),
-  password: z.string().min(8).max(120),
+  password: z.string().max(120),
   createdAt: z.string(),
-  updatedAT: z.string(),
-  deletedAt: z.string().nullish(),
+  updatedAt: z.string(),
+  deletedAt: z.string().nullable(),
 });
 
 export const userSchemaRequest = userSchema.omit({
   id: true,
   createdAt: true,
-  updatedAT: true,
+  updatedAt: true,
   deletedAt: true,
 });
 
 export const userSchemaResponse = userSchema.omit({ password: true });
+export const userSchemaResponseArray = userSchemaResponse.array();
 
-export const userSchemaUpdate = userSchemaRequest.omit({ id: true, admin: true }).partial();
+export const userSchemaUpdate = userSchemaRequest.partial();

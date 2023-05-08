@@ -1,5 +1,6 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -9,7 +10,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Schedule } from "./schedules.entity";
-import { hash } from "bcryptjs";
+import { getRounds, hash, hashSync } from "bcryptjs";
 
 @Entity("users")
 export class User {
@@ -28,18 +29,23 @@ export class User {
   @Column({ type: "varchar", length: 120 })
   password: string;
 
-  @CreateDateColumn()
-  createdAt: Date | string;
+  @CreateDateColumn({ type: "date" })
+  createdAt: string;
 
-  @UpdateDateColumn()
-  updatedAt: Date | string;
+  @UpdateDateColumn({ type: "date" })
+  updatedAt: string;
 
-  @DeleteDateColumn()
-  deletedAt: Date | string;
+  @DeleteDateColumn({ type: "date" })
+  deletedAt: string;
 
   @BeforeInsert()
-  async hashPassword() {
-    this.password = await hash(this.password, 8);
+  @BeforeUpdate()
+  hashPassword() {
+    const isEncrypted: number = getRounds(this.password);
+
+    if (!isEncrypted) {
+      this.password = hashSync(this.password, 10);
+    }
   }
 
   @OneToMany(() => Schedule, (schedule) => schedule.user)

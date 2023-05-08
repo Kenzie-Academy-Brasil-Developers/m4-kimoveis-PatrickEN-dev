@@ -2,7 +2,6 @@ import { Repository } from "typeorm";
 import { TLogin } from "../../@types/login/login.type";
 import { User } from "../../entities";
 import { AppDataSource } from "../../data-source";
-import { Tuser } from "../../@types/users.types";
 import { AppError } from "../../errors/error";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
@@ -11,24 +10,18 @@ import "dotenv/config";
 export const createTokenService = async (loginData: TLogin) => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-  const user: Tuser | null = await userRepository.findOne({
+  const user: User | null = await userRepository.findOne({
     where: { email: loginData.email },
   });
 
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError("Invalid credentials", 401);
   }
 
   const isPasswordValid: boolean = await compare(loginData.password, user.password);
 
-  const isEmailValid: boolean = loginData.email.toLowerCase() == user.email.toLowerCase();
-
-  if (!isPasswordValid || !isEmailValid) {
+  if (!isPasswordValid || user.deletedAt) {
     throw new AppError("Invalid credentials", 401);
-  }
-
-  if (user.deletedAt) {
-    throw new AppError("User is deleted", 401);
   }
 
   const token = sign(

@@ -35,8 +35,8 @@ export class User {
   @UpdateDateColumn({ type: "date" })
   updatedAt: string;
 
-  @DeleteDateColumn({ type: "date" })
-  deletedAt: string;
+  @DeleteDateColumn({ type: "date", nullable: true })
+  deletedAt: string | null | undefined;
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -39,7 +39,7 @@ export const validateUserPermissionMid = async (
 
   if (!isAdmin) {
     if (requestedUserId !== userId) {
-      throw new AppError("Insufficient Permission", 403);
+      throw new AppError("Insufficient permission", 403);
     }
   }
 

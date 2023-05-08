@@ -10,7 +10,7 @@ export const checkUserIdExistsMid = async (
   next: NextFunction
 ): Promise<void> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
-  const userIdBody: number = parseInt(req.body.userId);
+  const userIdBody: number = parseInt(req.params.id);
 
   const checkuserIdAlreadyExists = await userRepository.findOne({
     where: {
@@ -19,7 +19,7 @@ export const checkUserIdExistsMid = async (
   });
 
   if (!checkuserIdAlreadyExists) {
-    throw new AppError("user not found", 404);
+    throw new AppError("User not found", 404);
   }
 
   return next();

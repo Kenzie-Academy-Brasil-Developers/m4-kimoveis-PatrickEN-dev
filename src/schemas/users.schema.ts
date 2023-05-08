@@ -21,4 +21,4 @@ export const userSchemaRequest = userSchema.omit({
 export const userSchemaResponse = userSchema.omit({ password: true });
 export const userSchemaResponseArray = userSchemaResponse.array();
 
-export const userSchemaUpdate = userSchemaRequest.partial();
+export const userSchemaUpdate = userSchema.omit({ id: true, admin: true }).partial();

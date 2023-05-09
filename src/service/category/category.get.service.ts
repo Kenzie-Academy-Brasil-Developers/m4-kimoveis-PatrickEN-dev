@@ -4,22 +4,28 @@ import { Category } from "../../entities";
 import { AppError } from "../../errors/error";
 
 export const listCategoryService = async (): Promise<Category[]> => {
-  const categoryRepository: Repository<Category> = AppDataSource.getRepository(Category);
+  const categoryRepository: Repository<Category> =
+    AppDataSource.getRepository(Category);
 
   const categories: Category[] = await categoryRepository.find();
 
   return categories;
 };
 
-export const listCategoryWithRealEstateService = async (categoryId: number): Promise<Category> => {
-  const categoryRepository: Repository<Category> = AppDataSource.getRepository(Category);
+export const listCategoryWithRealEstateService = async (
+  categoryId: number
+): Promise<Category> => {
+  const categoryRepository: Repository<Category> =
+    AppDataSource.getRepository(Category);
+  console.log("chegou");
 
-  const categoriesWithRealEstates: Category | null = await categoryRepository.findOne({
-    where: { id: categoryId },
-    relations: {
-      realEstate: true,
-    },
-  });
+  const categoriesWithRealEstates: Category | null =
+    await categoryRepository.findOne({
+      where: { id: categoryId },
+      relations: {
+        realEstate: true,
+      },
+    });
 
   console.log(categoriesWithRealEstates);
 

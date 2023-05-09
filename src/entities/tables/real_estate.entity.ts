@@ -29,10 +29,10 @@ export class RealEstate {
   size: number;
 
   @CreateDateColumn({ type: "date" })
-  createdAt: Date;
+  createdAt: string;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @UpdateDateColumn({ type: "date" })
+  updatedAt: string;
 
   @OneToMany(() => Schedule, (schedule) => schedule.realEstate)
   schedules: Schedule[];
@@ -42,6 +42,5 @@ export class RealEstate {
 
   @OneToOne(() => Address)
   @JoinColumn()
-  @Index({ unique: true })
   address: Address;
 }

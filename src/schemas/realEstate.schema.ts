@@ -17,7 +17,7 @@ export const realEstateSchema = z.object({
   updatedAt: z.string(),
 });
 
-export const realEstateResponse = realEstateSchema.omit({
+export const realEstateRequest = realEstateSchema.omit({
   id: true,
   sold: true,
   createdAt: true,

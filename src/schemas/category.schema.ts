@@ -5,4 +5,4 @@ export const categorySchema = z.object({
   name: z.string().max(45),
 });
 
-export const categorySchemaResponse = categorySchema.omit({ id: true });
+export const categorySchemaRequest = categorySchema.omit({ id: true });

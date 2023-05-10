@@ -8,4 +8,4 @@ export const scheduleSchema = z.object({
   userId: z.number(),
 });
 
-export const scheduleSchemaResponse = scheduleSchema.omit({ id: true, userId: true });
+export const scheduleSchemaRequest = scheduleSchema.omit({ id: true, userId: true });

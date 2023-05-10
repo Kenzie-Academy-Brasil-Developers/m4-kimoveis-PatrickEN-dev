@@ -9,7 +9,7 @@ export class Address {
   street: string;
 
   @Column({ type: "varchar", length: 8 })
-  zipdCode: string;
+  zipCode: string;
 
   @Column({ type: "varchar", length: 7, nullable: true })
   number?: string | null | undefined;

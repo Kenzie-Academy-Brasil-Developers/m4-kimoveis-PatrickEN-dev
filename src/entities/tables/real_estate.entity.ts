@@ -20,7 +20,7 @@ export class RealEstate {
   id: number;
 
   @Column({ type: "boolean", default: false })
-  sold: string;
+  sold: boolean;
 
   @Column({ type: "decimal", precision: 12, scale: 2, default: 0 })
   value: string | number;

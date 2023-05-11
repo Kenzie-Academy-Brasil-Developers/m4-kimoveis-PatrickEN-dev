@@ -2,6 +2,7 @@ import { Router } from "express";
 import { validateTokenMid } from "../middlewares/validate.middleware";
 import {
   checkIsUserAdminMid,
+  checkRealEstateIdExists,
   checkScheduleDateAndHourIsValidMid,
   checkScheduleExistsMid,
 } from "../middlewares/check.middleware";
@@ -18,6 +19,7 @@ scheduleRoutes.post(
   "",
   validateTokenMid,
   validateRequestBodyMid(scheduleSchemaRequest),
+  checkRealEstateIdExists,
   checkScheduleExistsMid,
   checkScheduleDateAndHourIsValidMid,
   createSchedulesController

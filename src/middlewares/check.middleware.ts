@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Repository, getRepository } from "typeorm";
-import { Schedule, User } from "../entities";
+import { RealEstate, Schedule, User } from "../entities";
 import { AppDataSource } from "../data-source";
 import { AppError } from "../errors/error";
 
@@ -13,9 +13,7 @@ export const checkUserIdExistsMid = async (
   const userIdBody: number = parseInt(req.params.id);
 
   const checkuserIdAlreadyExists = await userRepository.findOne({
-    where: {
-      id: userIdBody,
-    },
+    where: { id: userIdBody },
   });
 
   if (!checkuserIdAlreadyExists) throw new AppError("User not found", 404);
@@ -33,9 +31,7 @@ export const checkIsEmailUniqueMid = async (
 
   if (userEmailBody) {
     const checkEmailAlreadyExists = await userRepository.findOne({
-      where: {
-        email: userEmailBody,
-      },
+      where: { email: userEmailBody },
     });
 
     if (checkEmailAlreadyExists) throw new AppError("Email already exists", 409);
@@ -56,6 +52,24 @@ export const checkIsUserAdminMid = async (
   return next();
 };
 
+export const checkRealEstateIdExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const realEstateRepository: Repository<RealEstate> = AppDataSource.getRepository(RealEstate);
+
+  const realEstateId: number = parseInt(req.body.realEstateId);
+
+  const isThereRealEstateId: RealEstate | null = await realEstateRepository.findOne({
+    where: { id: realEstateId },
+  });
+
+  if (!isThereRealEstateId) throw new AppError("RealEstate not found", 404);
+
+  return next();
+};
+
 export const checkScheduleExistsMid = async (
   req: Request,
   res: Response,
@@ -66,22 +80,26 @@ export const checkScheduleExistsMid = async (
   const userId: number = parseInt(res.locals.id);
   const { date, hour, realEstateId } = req.body;
 
-  const thereIsRealEstateId = await scheduleRepository.find({
-    where: { realEstate: { id: realEstateId } },
-    relations: { realEstate: true },
-  });
-
-  if (!thereIsRealEstateId) throw new AppError("RealEstate not found", 404);
-
-  const scheduleAlreadyExists = await scheduleRepository
+  const userAlreadyhaveSchedule = await scheduleRepository
     .createQueryBuilder("schedule")
     .where("schedule.userId = :userId", { userId })
-    .andWhere("schedule.realEstateId = :realEstateId", { realEstateId })
     .andWhere("schedule.date = :date", { date })
     .andWhere("schedule.hour = :hour", { hour })
     .getOne();
 
-  console.log("scheduleAlreadyExists", scheduleAlreadyExists);
+  if (userAlreadyhaveSchedule) {
+    throw new AppError(
+      "User schedule to this real estate at this date and time already exists",
+      409
+    );
+  }
+
+  const scheduleAlreadyExists = await scheduleRepository
+    .createQueryBuilder("schedule")
+    .where("schedule.hour = :hour", { hour })
+    .andWhere("schedule.date= :date", { date })
+    .andWhere("schedule.realEstateId = :realEstateId", { realEstateId })
+    .getOne();
 
   if (scheduleAlreadyExists)
     throw new AppError("Schedule to this real estate at this date and time already exists", 409);

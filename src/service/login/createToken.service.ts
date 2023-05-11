@@ -14,9 +14,7 @@ export const createTokenService = async (loginData: TLogin) => {
     where: { email: loginData.email },
   });
 
-  if (!user) {
-    throw new AppError("Invalid credentials", 401);
-  }
+  if (!user) throw new AppError("Invalid credentials", 401);
 
   const isPasswordValid: boolean = await compare(loginData.password, user.password);
 

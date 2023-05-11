@@ -14,9 +14,7 @@ export const createCategoryService = async (payload: TcategoryRequest): Promise<
     where: { name },
   });
 
-  if (categoryWithSameName) {
-    throw new AppError("Category already exists", 409);
-  }
+  if (categoryWithSameName) throw new AppError("Category already exists", 409);
 
   const newCategory: Category = categoryRepository.create(payload);
 

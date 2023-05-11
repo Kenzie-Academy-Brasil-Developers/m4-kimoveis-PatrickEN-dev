@@ -1,11 +1,28 @@
 import { Router } from "express";
 import { validateTokenMid } from "../middlewares/validate.middleware";
-import { checkIsUserAdminMid } from "../middlewares/check.middleware";
-import { listRealEstatesSchedulesController } from "../controllers/schedules.controller";
+import {
+  checkIsUserAdminMid,
+  checkScheduleDateAndHourIsValidMid,
+  checkScheduleExistsMid,
+} from "../middlewares/check.middleware";
+import {
+  createSchedulesController,
+  listRealEstatesSchedulesController,
+} from "../controllers/schedules.controller";
+import { validateRequestBodyMid } from "../middlewares/validateBody/validateBody.middleware";
+import { scheduleSchemaRequest } from "../schemas/schedules.schema";
 
 export const scheduleRoutes: Router = Router();
 
-scheduleRoutes.post("");
+scheduleRoutes.post(
+  "",
+  validateTokenMid,
+  validateRequestBodyMid(scheduleSchemaRequest),
+  checkScheduleExistsMid,
+  checkScheduleDateAndHourIsValidMid,
+  createSchedulesController
+);
+
 scheduleRoutes.get(
   "/realEstate/:id",
   validateTokenMid,

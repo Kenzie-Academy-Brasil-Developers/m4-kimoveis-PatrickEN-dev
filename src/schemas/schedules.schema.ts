@@ -4,8 +4,7 @@ export const scheduleSchema = z.object({
   id: z.number(),
   date: z.string(),
   hour: z.string(),
-  realEstate: z.number(),
-  userId: z.number(),
+  realEstateId: z.number().int().positive(),
 });
 
-export const scheduleSchemaRequest = scheduleSchema.omit({ id: true, userId: true });
+export const scheduleSchemaRequest = scheduleSchema.omit({ id: true });

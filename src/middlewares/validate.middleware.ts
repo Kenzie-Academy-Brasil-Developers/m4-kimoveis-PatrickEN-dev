@@ -10,16 +10,13 @@ export const validateTokenMid = async (
 ): Promise<void> => {
   const authorization: string | undefined = req.headers.authorization;
 
-  if (!authorization) {
-    throw new AppError("Missing bearer token", 401);
-  }
+  if (!authorization) throw new AppError("Missing bearer token", 401);
 
   const [_bearer, token] = authorization.split(" ");
 
   verify(token, String(process.env.SECRET_KEY), (err: any, decoded: any) => {
-    if (err) {
-      throw new AppError(err.message, 401);
-    }
+    if (err) throw new AppError(err.message, 401);
+
     res.locals.id = decoded.sub;
     res.locals.email = decoded.email;
     res.locals.admin = decoded.admin;
@@ -38,9 +35,7 @@ export const validateUserPermissionMid = async (
   const requestedUserId = parseInt(req.params.id);
 
   if (!isAdmin) {
-    if (requestedUserId !== userId) {
-      throw new AppError("Insufficient permission", 403);
-    }
+    if (requestedUserId !== userId) throw new AppError("Insufficient permission", 403);
   }
 
   return next();

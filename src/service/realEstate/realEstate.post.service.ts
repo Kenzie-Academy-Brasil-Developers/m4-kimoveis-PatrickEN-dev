@@ -17,17 +17,13 @@ export const createRealEstateService = async (
     where: { ...address, number: address.number || "" },
   });
 
-  if (realEstateWithSameAddress) {
-    throw new AppError("Address already exists", 409);
-  }
+  if (realEstateWithSameAddress) throw new AppError("Address already exists", 409);
 
   const category = await categoryRepository.findOne({
     where: { id: categoryId },
   });
 
-  if (!category) {
-    throw new AppError("Category not found", 404);
-  }
+  if (!category) throw new AppError("Category not found", 404);
 
   const newAddress = addressRepository.create(address);
 

@@ -16,14 +16,10 @@ export const listCategoryWithRealEstateService = async (categoryId: number): Pro
 
   const categoriesWithRealEstates: Category | null = await categoryRepository.findOne({
     where: { id: categoryId },
-    relations: {
-      realEstate: true,
-    },
+    relations: { realEstate: true },
   });
 
-  if (!categoriesWithRealEstates) {
-    throw new AppError(`Category not found`, 404);
-  }
+  if (!categoriesWithRealEstates) throw new AppError(`Category not found`, 404);
 
   return categoriesWithRealEstates;
 };

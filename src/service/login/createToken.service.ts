@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { TLogin } from "../../@types/login/login.type";
+import { IToken, TLogin } from "../../@types/login/login.type";
 import { User } from "../../entities";
 import { AppDataSource } from "../../data-source";
 import { AppError } from "../../errors/error";
@@ -7,7 +7,7 @@ import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import "dotenv/config";
 
-export const createTokenService = async (loginData: TLogin) => {
+export const createTokenService = async (loginData: TLogin): Promise<IToken> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
   const user: User | null = await userRepository.findOne({

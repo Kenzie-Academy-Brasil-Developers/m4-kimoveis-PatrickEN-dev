@@ -1,11 +1,7 @@
 import { Router } from "express";
 import { validateRequestBodyMid } from "../middlewares/validateBody/validateBody.middleware";
 import { userSchemaRequest, userSchemaUpdate } from "../schemas/users.schema";
-import {
-  checkIsEmailUniqueMid,
-  checkIsUserAdminMid,
-  checkUserIdExistsMid,
-} from "../middlewares/check.middleware";
+
 import {
   createUserController,
   desactiveUserController,
@@ -13,6 +9,11 @@ import {
   updateUserController,
 } from "../controllers/users.controller";
 import { validateTokenMid, validateUserPermissionMid } from "../middlewares/validate.middleware";
+import {
+  checkIsEmailUniqueMid,
+  checkIsUserAdminMid,
+  checkUserIdExistsMid,
+} from "../middlewares/users.middleware";
 
 export const usersRoutes: Router = Router();
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkIsUserAdminMid } from "../middlewares/check.middleware";
+
 import { validateTokenMid } from "../middlewares/validate.middleware";
 import { validateRequestBodyMid } from "../middlewares/validateBody/validateBody.middleware";
 import { categorySchemaRequest } from "../schemas/category.schema";
@@ -8,6 +8,7 @@ import {
   listCategoriesController,
   listcategoriesWithRealEstatesController,
 } from "../controllers/categories.controller";
+import { checkIsUserAdminMid } from "../middlewares/users.middleware";
 
 export const categoryRoutes: Router = Router();
 

@@ -6,7 +6,7 @@ import {
 import { validateRequestBodyMid } from "../middlewares/validateBody/validateBody.middleware";
 import { realEstateSchemaRequest } from "../schemas/realEstate.schema";
 import { validateTokenMid } from "../middlewares/validate.middleware";
-import { checkIsUserAdminMid } from "../middlewares/check.middleware";
+import { checkIsUserAdminMid } from "../middlewares/users.middleware";
 
 export const realEstateRoutes: Router = Router();
 
